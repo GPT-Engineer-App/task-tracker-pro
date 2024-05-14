@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, VStack, HStack, Text, Input, Button, Select, Box, IconButton, Image, useToast } from "@chakra-ui/react";
+import { Container, VStack, HStack, Text, Input, Button, Select, Box, IconButton, Image, useToast, Table, Thead, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 import { FaPlus, FaTrash, FaEdit } from "react-icons/fa";
 
 const Index = () => {
@@ -94,22 +94,47 @@ const Index = () => {
             Add Task
           </Button>
         </HStack>
-        {projects.map((project, projectIndex) => (
-          <Box key={projectIndex} width="100%" p={4} borderWidth={1} borderRadius="md">
-            <Text fontSize="xl" mb={4}>
-              {project.name}
-            </Text>
-            {project.tasks.map((task, taskIndex) => (
-              <HStack key={taskIndex} width="100%" p={2} borderWidth={1} borderRadius="md" mb={2}>
-                <Text flex={1}>{task.name}</Text>
-                <Text>{task.dueDate}</Text>
-                <Text>{task.status}</Text>
-                {task.image && <Image src={task.image} boxSize="50px" />}
-                <IconButton aria-label="Delete Task" icon={<FaTrash />} onClick={() => deleteTask(project.name, taskIndex)} />
-              </HStack>
+        <Table variant="simple" width="100%">
+          <Thead>
+            <Tr>
+              <Th>Project Name</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {projects.map((project, projectIndex) => (
+              <Tr key={projectIndex}>
+                <Td>{project.name}</Td>
+              </Tr>
             ))}
-          </Box>
-        ))}
+          </Tbody>
+        </Table>
+
+        <Table variant="simple" width="100%" mt={4}>
+          <Thead>
+            <Tr>
+              <Th>Task Name</Th>
+              <Th>Due Date</Th>
+              <Th>Status</Th>
+              <Th>Image</Th>
+              <Th>Actions</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {projects.map((project) =>
+              project.tasks.map((task, taskIndex) => (
+                <Tr key={taskIndex}>
+                  <Td>{task.name}</Td>
+                  <Td>{task.dueDate}</Td>
+                  <Td>{task.status}</Td>
+                  <Td>{task.image && <Image src={task.image} boxSize="50px" />}</Td>
+                  <Td>
+                    <IconButton aria-label="Delete Task" icon={<FaTrash />} onClick={() => deleteTask(project.name, taskIndex)} />
+                  </Td>
+                </Tr>
+              )),
+            )}
+          </Tbody>
+        </Table>
       </VStack>
     </Container>
   );
